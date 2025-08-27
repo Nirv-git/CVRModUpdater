@@ -1,4 +1,5 @@
 ﻿using MelonLoader;
+using MelonLoader.Utils;
 using Mono.Cecil;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -12,12 +13,12 @@ namespace CVRModUpdater.Loader
 {
     public class CVRModUpdaterPlugin : MelonPlugin
     {
-        internal const string VERSION = "1.0.8";
+        internal const string VERSION = "1.0.9";
 
         public static string Version => VERSION;
 
-        string targetDirectoryPath  = Path.Combine(MelonHandler.ModsDirectory, "..", "UserData");
-        string targetFilePath       = Path.Combine(MelonHandler.ModsDirectory, "..", "UserData", "CVRModUpdater.Core.dll");
+        string targetDirectoryPath  = Path.Combine(MelonEnvironment.ModsDirectory, "..", "UserData");
+        string targetFilePath       = Path.Combine(MelonEnvironment.ModsDirectory, "..", "UserData", "CVRModUpdater.Core.dll");
 
         public override void OnApplicationEarlyStart()
         {

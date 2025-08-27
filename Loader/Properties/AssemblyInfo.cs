@@ -30,11 +30,11 @@ using CVRModUpdater.Loader;
 // Vous pouvez spécifier toutes les valeurs ou indiquer les numéros de build et de révision par défaut
 // en utilisant '*', comme indiqué ci-dessous :
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion(CVRModUpdaterPlugin.VERSION)]
+[assembly: AssemblyFileVersion(CVRModUpdaterPlugin.VERSION)]
 
 [assembly: MelonInfo(typeof(CVRModUpdaterPlugin), "CVRModUpdater.Loader", CVRModUpdaterPlugin.VERSION, "Nirvash, Slaynash")]
-[assembly: MelonGame("Alpha Blend Interactive", "ChilloutVR")]
+[assembly: MelonGame(null, "ChilloutVR")]
 
 // ModLoadSeparator runs before us and we need to be first, otherwise it tries loading mods that 
 // we may have moved to the Broken folder

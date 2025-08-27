@@ -233,7 +233,7 @@ namespace CVRModUpdater.Core
 
                     GDI.SelectObject(hdc, hTextFont);
                     User32.DrawText(hdc, $"Loader v{CVRModUpdaterPlugin.Version}\nCore v{CVRModUpdaterCore.Version}", -1, ref titleRect, DrawText.LEFT | DrawText.TOP);
-                    User32.DrawText(hdc, $"MelonLoader {BuildInfo.Version}\nChilloutVR {UnityEngine.Application.version}", -1, ref titleRect, DrawText.RIGHT | DrawText.TOP);
+                    User32.DrawText(hdc, $"MelonLoader {MelonLoader.Properties.BuildInfo.Version}\nChilloutVR {UnityEngine.Application.version}", -1, ref titleRect, DrawText.RIGHT | DrawText.TOP);
 
                     // End paint
                     User32.EndPaint(hWnd, ref ps);

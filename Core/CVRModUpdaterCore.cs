@@ -1,4 +1,10 @@
-﻿using MelonLoader;
+﻿using CVRModUpdater.API;
+using CVRModUpdater.Core.API;
+using CVRModUpdater.Core.Externs;
+using CVRModUpdater.Core.Utils;
+using MelonLoader;
+using MelonLoader.Melons;
+using MelonLoader.Utils;
 using Mono.Cecil;
 using Newtonsoft.Json;
 using System;
@@ -6,20 +12,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Threading;
-using System.Runtime.InteropServices;
-using CVRModUpdater.API;
-using CVRModUpdater.Core.API;
-using CVRModUpdater.Core.Externs;
-using CVRModUpdater.Core.Utils;
+using System.Xml.Linq;
 using Winuser;
 
 namespace CVRModUpdater.Core
 {
     public static class CVRModUpdaterCore
     {
-        internal const string VERSION = "1.0.8";
+        internal const string VERSION = "1.0.9";
         public static string Version => VERSION;
 
         private static readonly Dictionary<string, string> oldToNewModNames = new Dictionary<string, string>()
@@ -113,6 +116,9 @@ namespace CVRModUpdater.Core
         private static void UpdateMods()
         {
             Thread.Sleep(500);
+
+            MigrateVRDesktopFolder();
+
             currentStatus = "Fetching remote mods...";
             FetchRemoteMods();
             currentStatus = "Listing installed mods...";
@@ -166,6 +172,33 @@ namespace CVRModUpdater.Core
             MelonLogger.Msg("API returned " + apiMods.Length + " mods, including " + verifiedModsCount + " verified mods");
         }
 
+        private static void MigrateVRDesktopFolder()
+        {
+            string modsFolder = MelonEnvironment.ModsDirectory;
+            string desktopFolder = $"Desktop";
+            string vrFolder = $"VR";
+            var list = new[] { desktopFolder, vrFolder };
+
+            foreach (var item in list)
+            {
+                var oldFolder = $"{modsFolder}/{item}";
+                if (!Directory.Exists(oldFolder))
+                    continue;
+                var newFolder = $"{modsFolder}/~{item}";
+                if (Directory.Exists(newFolder))
+                    continue;
+                MelonLogger.Msg($"Attempting to migrate '{oldFolder}' to '{newFolder}'");
+                try
+                {
+                    Directory.Move(oldFolder, newFolder);
+                }
+                catch (Exception ex)
+                {
+                    MelonLogger.Error($"Failed to migrate '{oldFolder}': {ex}");
+                }
+            }
+        }
+
         private static void ScanModFolder()
         {
             var list = new[] { installedMods, brokenMods };
@@ -176,9 +209,9 @@ namespace CVRModUpdater.Core
             {   //This is a kinda dirty way to do this
                 dict.Clear();
 
-                string modsFolder = MelonHandler.ModsDirectory;
-                string desktopFolder = $"{modsFolder}/Desktop";
-                string vrFolder = $"{modsFolder}/VR";
+                string modsFolder = MelonEnvironment.ModsDirectory;
+                string desktopFolder = $"{modsFolder}/~Desktop";
+                string vrFolder = $"{modsFolder}/~VR";
 
                 string[] folders = new string[3]{ modsFolder,desktopFolder,vrFolder};
 
