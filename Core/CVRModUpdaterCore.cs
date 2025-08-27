@@ -117,7 +117,7 @@ namespace CVRModUpdater.Core
         {
             Thread.Sleep(500);
 
-            MigrateVRDesktopFolder();
+            //MigrateVRDesktopFolder();
 
             currentStatus = "Fetching remote mods...";
             FetchRemoteMods();
@@ -172,32 +172,32 @@ namespace CVRModUpdater.Core
             MelonLogger.Msg("API returned " + apiMods.Length + " mods, including " + verifiedModsCount + " verified mods");
         }
 
-        private static void MigrateVRDesktopFolder()
-        {
-            string modsFolder = MelonEnvironment.ModsDirectory;
-            string desktopFolder = $"Desktop";
-            string vrFolder = $"VR";
-            var list = new[] { desktopFolder, vrFolder };
+        //private static void MigrateVRDesktopFolder()
+        //{
+        //    string modsFolder = MelonEnvironment.ModsDirectory;
+        //    string desktopFolder = $"Desktop";
+        //    string vrFolder = $"VR";
+        //    var list = new[] { desktopFolder, vrFolder };
 
-            foreach (var item in list)
-            {
-                var oldFolder = $"{modsFolder}/{item}";
-                if (!Directory.Exists(oldFolder))
-                    continue;
-                var newFolder = $"{modsFolder}/~{item}";
-                if (Directory.Exists(newFolder))
-                    continue;
-                MelonLogger.Msg($"Attempting to migrate '{oldFolder}' to '{newFolder}'");
-                try
-                {
-                    Directory.Move(oldFolder, newFolder);
-                }
-                catch (Exception ex)
-                {
-                    MelonLogger.Error($"Failed to migrate '{oldFolder}': {ex}");
-                }
-            }
-        }
+        //    foreach (var item in list)
+        //    {
+        //        var oldFolder = $"{modsFolder}/{item}";
+        //        if (!Directory.Exists(oldFolder))
+        //            continue;
+        //        var newFolder = $"{modsFolder}/~{item}";
+        //        if (Directory.Exists(newFolder))
+        //            continue;
+        //        MelonLogger.Msg($"Attempting to migrate '{oldFolder}' to '{newFolder}'");
+        //        try
+        //        {
+        //            Directory.Move(oldFolder, newFolder);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            MelonLogger.Error($"Failed to migrate '{oldFolder}': {ex}");
+        //        }
+        //    }
+        //}
 
         private static void ScanModFolder()
         {
@@ -210,8 +210,8 @@ namespace CVRModUpdater.Core
                 dict.Clear();
 
                 string modsFolder = MelonEnvironment.ModsDirectory;
-                string desktopFolder = $"{modsFolder}/~Desktop";
-                string vrFolder = $"{modsFolder}/~VR";
+                string desktopFolder = $"{modsFolder}/Desktop"; //~Desktop
+                string vrFolder = $"{modsFolder}/VR"; //~VR
 
                 string[] folders = new string[3]{ modsFolder,desktopFolder,vrFolder};
 
